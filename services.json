@@ -3,12 +3,29 @@
     "name": "YouTube",
     "url": "https://youtube.com",
     "icon": "🎬",
-    "color": "#FF0000"
+    "color": "#FF0000",
+    "policy": {
+      "minLength": 8,
+      "maxLength": null,               // null oder weglassen = keine Obergrenze
+      "allowedSpecials": "!@#$%^&*()", // String ODER Array möglich
+      "otherRequirements": [           // optional, Liste
+        "Mindestens 1 Zahl",
+        "Mindestens 1 Großbuchstabe"
+      ]
+    }
   },
   {
     "name": "GitHub",
     "url": "https://github.com",
     "icon": "🐙",
-    "color": "#24292e"
+    "color": "#24292e",
+    "policy": {
+      "minLength": 8,
+      "maxLength": 72,                 // → Karte wird rot markiert
+      "allowedSpecials": "_-+=!@#$%^&*()[]{}:;,.?",
+      "otherRequirements": [
+        "Keine Leerzeichen erlaubt"
+      ]
+    }
   }
 ]

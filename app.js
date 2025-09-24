@@ -1,94 +1,56 @@
-// app.js — read-only datasource loader (JSON -> TXT fallback)
-
-async function fetchText(url) {
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return await res.text();
-}
+// app.js — reine JSON-Datenquelle, keine Edit-Funktionen
 
 async function loadServices() {
-  // 1) Versuch: services.json
-  try {
-    const txt = await fetchText("services.json");
-    const data = JSON.parse(txt);
-    if (!Array.isArray(data)) throw new Error("services.json must be an array");
-    return data.map(normalizeItem);
-  } catch (eJson) {
-    // 2) Fallback: services.txt (optional)
-    try {
-      const txt = await fetchText("services.txt");
-      return parseTxt(txt).map(normalizeItem);
-    } catch (eTxt) {
-      console.error("Konnte weder services.json noch services.txt laden:", eJson, eTxt);
-      return [];
-    }
-  }
-}
-
-function parseTxt(txt) {
-  return txt
-    .split(/\r?\n/)
-    .map(l => l.trim())
-    .filter(l => l && !l.startsWith("#"))
-    .map(line => {
-      const [name="", url="", icon="", color=""] = line.split("|").map(s => s.trim());
-      return { name, url, icon, color };
-    })
-    .filter(item => item.name && item.url);
-}
-
-function normalizeItem(item) {
-  return {
-    name: String(item.name || "").trim(),
-    url: String(item.url || "").trim(),
-    icon: String(item.icon || "").trim(),
-    color: String(item.color || "").trim()
-  };
+  const res = await fetch("services.json", { cache: "no-store" });
+  if (!res.ok) throw new Error(`services.json konnte nicht geladen werden`);
+  const data = await res.json();
+  if (!Array.isArray(data)) throw new Error("services.json muss ein Array enthalten");
+  return data;
 }
 
 function createCard(item) {
   const card = document.createElement("div");
   card.className = "card";
+  if (item.maxLength && item.maxLength !== null) card.classList.add("red");
 
   const title = document.createElement("div");
   title.className = "name";
-  const iconSpan = document.createElement("span");
-  iconSpan.textContent = item.icon || "🔗";
-  const nameSpan = document.createElement("span");
-  nameSpan.textContent = item.name;
-  title.append(iconSpan, nameSpan);
+  title.innerHTML = `${item.icon || "🔗"} <span>${item.name}</span>`;
+
+  const meta = document.createElement("div");
+  meta.className = "meta";
+  meta.innerHTML = `
+    Mindestlänge: <b>${item.minLength ?? "-"}</b><br>
+    Maximallänge: <b>${item.maxLength ?? "keine"}</b><br>
+    Erlaubte Sonderzeichen: <b>${item.allowedSpecials || "beliebig"}</b><br>
+    Sonstiges: <b>${item.otherRequirements || "-"}</b>
+  `;
 
   const link = document.createElement("a");
   link.href = item.url;
   link.target = "_blank";
   link.rel = "noopener noreferrer";
-  link.textContent = `Öffnen`;
-  if (item.color) {
-    link.style.background = item.color;
-  }
+  link.textContent = "Zur Website";
+  if (item.color) link.style.background = item.color;
 
-  card.append(title, link);
+  card.append(title, meta, link);
   return card;
 }
 
 async function render() {
   const container = document.getElementById("services");
-  container.innerHTML = ""; // sicherheitshalber
-
-  const items = await loadServices();
-
-  if (!items.length) {
-    const msg = document.createElement("div");
-    msg.className = "muted";
-    msg.textContent = "Keine Dienste gefunden. Lege services.json oder services.txt im Projekt-Root an.";
-    container.appendChild(msg);
-    return;
-  }
-
-  for (const item of items) {
-    container.appendChild(createCard(item));
+  container.innerHTML = "";
+  try {
+    const items = await loadServices();
+    if (!items.length) {
+      container.textContent = "Keine Einträge in services.json gefunden.";
+      return;
+    }
+    for (const item of items) container.appendChild(createCard(item));
+  } catch (err) {
+    console.error(err);
+    container.textContent = "Fehler beim Laden von services.json.";
   }
 }
 
-// WICHTIG: Keine Edit-Funktionen, keine Speicherzugriffe.
 document.addEventListener("DOMContentLoaded", render);

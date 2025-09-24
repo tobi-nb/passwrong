@@ -6,19 +6,22 @@
   <title>passwrong</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Falls in deiner style.css schon ähnlich vorhanden, diesen Block weglassen */
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; background: #0b0b0b; color: #eee; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 24px; background: #0b0b0b; color: #eee; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
     .card { background: #151515; border-radius: 14px; padding: 16px; border: 1px solid #222; }
-    .card a { display: block; text-decoration: none; background: #222; color: #fff; padding: 12px 14px; border-radius: 10px; text-align: center; font-weight: 600; }
+    .card.red { border-color: #ff4444; }
     .card .name { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 18px; font-weight: 700; }
-    .muted { color: #aaa; font-size: 13px; }
+    .card a { display: inline-block; margin-top: 10px; text-decoration: none; background: #222; color: #fff;
+              padding: 8px 12px; border-radius: 8px; font-weight: 600; }
+    .meta { font-size: 14px; color: #bbb; line-height: 1.4; }
+    .meta b { color: #fff; }
   </style>
   <script defer src="app.js"></script>
 </head>
 <body>
-  <h1 style="margin-top:0">passwrong</h1>
-  <p class="muted">Dienste werden nur aus <code>services.json</code> (oder Fallback <code>services.txt</code>) geladen. Änderungen über die Website sind deaktiviert.</p>
+  <h1 style="margin-top:0">Passwort-Anforderungen</h1>
+  <p style="color:#aaa">Alle Daten stammen ausschließlich aus <code>services.json</code>.  
+     Dienste mit einer festgelegten <strong>Maximallänge</strong> werden rot markiert.</p>
   <div id="services" class="grid" aria-live="polite"></div>
 </body>
 </html>

@@ -7,21 +7,37 @@
   <link rel="stylesheet" href="style.css" />
   <style>
     body { font-family: system-ui, sans-serif; margin: 0; padding: 24px; background: #0b0b0b; color: #eee; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    .card { background: #151515; border-radius: 14px; padding: 16px; border: 1px solid #222; }
-    .card.red { border-color: #ff4444; }
-    .card .name { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 18px; font-weight: 700; }
-    .card a { display: inline-block; margin-top: 10px; text-decoration: none; background: #222; color: #fff;
-              padding: 8px 12px; border-radius: 8px; font-weight: 600; }
-    .meta { font-size: 14px; color: #bbb; line-height: 1.4; }
-    .meta b { color: #fff; }
+    .toolbar { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin: 8px 0 20px; }
+    .search { flex:1 1 280px; }
+    .search input { width:100%; padding:10px 12px; border-radius:10px; border:1px solid #2a2a2a; background:#151515; color:#eee; }
+    .chips { display:flex; gap:8px; flex-wrap:wrap; }
+    .chip { padding:6px 10px; border-radius:999px; border:1px solid #2a2a2a; background:#171717; color:#ddd; font-size:13px; cursor:pointer; }
+    .chip.active { background:#2a2a2a; }
+    .section { margin: 22px 0; }
+    .section h2 { margin: 0 0 10px; font-size: 16px; color:#bbb; font-weight:600; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap:16px; }
+    .card { background:#151515; border-radius:14px; padding:16px; border:1px solid #222; }
+    .card.red { border-color:#ff4444; box-shadow:0 0 0 1px #ff444440 inset; }
+    .name { display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:18px; font-weight:700; }
+    .meta { font-size:14px; color:#bbb; line-height:1.4; }
+    .meta b { color:#fff; }
+    .badges { display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 0; }
+    .badge { font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid #2a2a2a; background:#1b1b1b; color:#ccc; }
+    .badge.ok { border-color:#0c6; background:#0f2; color:#012; }
+    .badge.no { border-color:#a33; background:#2a0d0d; color:#ffb3ab; }
+    .btn { display:inline-block; margin-top:10px; text-decoration:none; background:#222; color:#fff; padding:8px 12px; border-radius:8px; font-weight:600; border:1px solid #2a2a2a; }
   </style>
   <script defer src="app.js"></script>
 </head>
 <body>
   <h1 style="margin-top:0">Passwort-Anforderungen</h1>
-  <p style="color:#aaa">Alle Daten stammen ausschließlich aus <code>services.json</code>.  
-     Dienste mit einer festgelegten <strong>Maximallänge</strong> werden rot markiert.</p>
-  <div id="services" class="grid" aria-live="polite"></div>
+  <p style="color:#aaa">Alle Daten stammen ausschließlich aus <code>services.json</code>. Dienste mit <strong>Maximallänge</strong> werden rot markiert.</p>
+
+  <div class="toolbar">
+    <div class="search"><input id="q" type="search" placeholder="Nach Namen suchen …" autocomplete="off" /></div>
+    <div id="chips" class="chips" aria-label="Kategorien"></div>
+  </div>
+
+  <div id="list"></div>
 </body>
 </html>

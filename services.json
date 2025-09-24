@@ -4,28 +4,38 @@
     "url": "https://youtube.com",
     "icon": "🎬",
     "color": "#FF0000",
-    "policy": {
-      "minLength": 8,
-      "maxLength": null,               // null oder weglassen = keine Obergrenze
-      "allowedSpecials": "!@#$%^&*()", // String ODER Array möglich
-      "otherRequirements": [           // optional, Liste
-        "Mindestens 1 Zahl",
-        "Mindestens 1 Großbuchstabe"
-      ]
-    }
+    "minLength": 8,
+    "maxLength": null,
+    "allowedSpecials": "!@#$%^&*",
+    "otherRequirements": "Mindestens ein Großbuchstabe, eine Zahl",
+    "twoFactor": true,
+    "passkey": false,
+    "category": "Social"
   },
   {
     "name": "GitHub",
     "url": "https://github.com",
     "icon": "🐙",
     "color": "#24292e",
-    "policy": {
-      "minLength": 8,
-      "maxLength": 72,                 // → Karte wird rot markiert
-      "allowedSpecials": "_-+=!@#$%^&*()[]{}:;,.?",
-      "otherRequirements": [
-        "Keine Leerzeichen erlaubt"
-      ]
-    }
+    "minLength": 10,
+    "maxLength": 128,
+    "allowedSpecials": "-_.",
+    "otherRequirements": "Keine wiederholten Zeichen erlaubt",
+    "twoFactor": true,
+    "passkey": true,
+    "category": "Developer"
+  },
+  {
+    "name": "Bank XY",
+    "url": "https://bank.example",
+    "icon": "🏦",
+    "color": "#0a6",
+    "minLength": 12,
+    "maxLength": 64,
+    "allowedSpecials": "!@#$%&*/+-",
+    "otherRequirements": "2FA empfohlen",
+    "twoFactor": true,
+    "passkey": false
+    /* keine category → fällt in "Ohne Kategorie" */
   }
 ]

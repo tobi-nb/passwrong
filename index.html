@@ -2,97 +2,23 @@
 <html lang="de">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Passwort-Anforderungen – Übersicht</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>passwrong</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Falls in deiner style.css schon ähnlich vorhanden, diesen Block weglassen */
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 0; padding: 24px; background: #0b0b0b; color: #eee; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .card { background: #151515; border-radius: 14px; padding: 16px; border: 1px solid #222; }
+    .card a { display: block; text-decoration: none; background: #222; color: #fff; padding: 12px 14px; border-radius: 10px; text-align: center; font-weight: 600; }
+    .card .name { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 18px; font-weight: 700; }
+    .muted { color: #aaa; font-size: 13px; }
+  </style>
+  <script defer src="app.js"></script>
 </head>
 <body>
-  <header class="container">
-    <h1>Passwort-Anforderungen</h1>
-    <p class="sub">Liste von Diensten und deren Regeln (min/max Länge, Notizen).</p>
-  </header>
-
-  <main class="container">
-    <section class="card">
-      <h2>Neuen Dienst hinzufügen</h2>
-      <form id="service-form" autocomplete="off">
-        <div class="grid">
-          <label>
-            <span>Dienst*</span>
-            <input type="text" id="name" required placeholder="z. B. Google" />
-          </label>
-
-          <label>
-            <span>Min. Länge*</span>
-            <input type="number" id="min" required min="1" step="1" placeholder="z. B. 10" />
-          </label>
-
-          <label>
-            <span>Max. Länge</span>
-            <input type="number" id="max" min="1" step="1" placeholder="z. B. 20 (optional)" />
-          </label>
-
-          <label class="full">
-            <span>Notizen</span>
-            <input type="text" id="notes" placeholder="z. B. mind. 1 Zahl & 1 Sonderzeichen" />
-          </label>
-        </div>
-
-        <div class="actions">
-          <button type="submit">Hinzufügen</button>
-          <button type="button" id="reset-form" class="secondary">Formular leeren</button>
-        </div>
-      </form>
-    </section>
-
-    <section class="card">
-      <div class="toolbar">
-        <input id="search" type="search" placeholder="Suchen (Dienst/Notiz) …" />
-        <div class="spacer"></div>
-        <button id="export-btn" title="Als JSON herunterladen">Export</button>
-        <label for="import-file" class="button-like">Import</label>
-        <input id="import-file" type="file" accept="application/json" hidden />
-        <button id="clear-all" class="danger" title="Alle lokalen Einträge löschen">Alles löschen</button>
-      </div>
-
-      <div class="table-wrap">
-        <table id="table">
-          <thead>
-            <tr>
-              <th data-sort="name">Dienst ▲▼</th>
-              <th data-sort="min">Min</th>
-              <th data-sort="max">Max</th>
-              <th>Notizen</th>
-              <th>Aktionen</th>
-            </tr>
-          </thead>
-          <tbody id="tbody">
-            <!-- Zeilen werden per JS gerendert -->
-          </tbody>
-        </table>
-        <p id="empty" class="empty hidden">Noch keine Einträge. Füge oben einen Dienst hinzu.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="container foot">
-    <small>Gespeichert im Browser (localStorage). Für Team-Sharing: JSON exportieren und im Repo ablegen.</small>
-  </footer>
-
-  <dialog id="edit-dialog">
-    <form method="dialog" id="edit-form">
-      <h3>Eintrag bearbeiten</h3>
-      <label> Dienst* <input type="text" id="edit-name" required /> </label>
-      <label> Min* <input type="number" id="edit-min" required min="1" step="1" /> </label>
-      <label> Max <input type="number" id="edit-max" min="1" step="1" /> </label>
-      <label> Notizen <input type="text" id="edit-notes" /> </label>
-      <menu>
-        <button value="cancel" class="secondary">Abbrechen</button>
-        <button id="edit-save" value="default">Speichern</button>
-      </menu>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
+  <h1 style="margin-top:0">passwrong</h1>
+  <p class="muted">Dienste werden nur aus <code>services.json</code> (oder Fallback <code>services.txt</code>) geladen. Änderungen über die Website sind deaktiviert.</p>
+  <div id="services" class="grid" aria-live="polite"></div>
 </body>
 </html>
